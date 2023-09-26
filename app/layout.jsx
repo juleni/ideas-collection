@@ -11,6 +11,8 @@ const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body>
+        {/** TODO: FIX THIS: mainX style does not exist,
+         * original main style causes button:hover issue */}
         <div className="mainX">
           <div className="gradient"></div>
           <main className="app">
