@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 const Nav = () => {
   const isUserLoggedIn = true;
   const [providers, setProviders] = useState(null);
+  const [toggleDropdown, settoggleDropdown] = useState(false);
 
   // Run onload
   useEffect(() => {
@@ -16,7 +17,7 @@ const Nav = () => {
       setProviders(response);
     };
 
-    setProviders();
+    // setProviders();
   }, []);
 
   return (
@@ -39,11 +40,7 @@ const Nav = () => {
             <Link href="/create-idea" className="black_btn">
               Create Post
             </Link>
-            <button
-              type="button"
-              onClick={signOut}
-              className="outline_btn hover:bg-black"
-            >
+            <button type="button" onClick={signOut} className="outline_btn">
               Sign Out
             </button>
             <Link href="/profile">
@@ -55,6 +52,69 @@ const Nav = () => {
                 className="rounded-full"
               />
             </Link>
+          </div>
+        ) : (
+          <>
+            {
+              // If exists providers (onload), then map over all providers
+              // and generate button for each one
+              providers &&
+                Object.values(providers).map((provider) => (
+                  <button
+                    type="button"
+                    key={provider.name}
+                    onClick={() => signIn(provider.id)}
+                    className="black_btn"
+                  >
+                    Sign In
+                  </button>
+                ))
+            }
+          </>
+        )}
+      </div>
+
+      {/** Mobile Navigation */}
+      <div className="sm:hidden flex relative">
+        {isUserLoggedIn ? (
+          <div className="flex">
+            {" "}
+            <Image
+              src="/assets/images/logo.svg"
+              alt="Profile"
+              width={37}
+              height={37}
+              className="rounded-full"
+              onClick={() => settoggleDropdown((prev) => !prev)}
+            />
+            {toggleDropdown && (
+              <div className="dropdown">
+                <Link
+                  href="/profile"
+                  className="dropdown_link"
+                  onClick={() => settoggleDropdown(false)}
+                >
+                  My Profile
+                </Link>
+                <Link
+                  href="/create-idea"
+                  className="dropdown_link"
+                  onClick={() => settoggleDropdown(false)}
+                >
+                  Create Idea
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    settoggleDropdown(false);
+                    signOut();
+                  }}
+                  className="mt-5 w-full black_btn"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <>
