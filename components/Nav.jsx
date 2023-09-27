@@ -1,23 +1,22 @@
 "use client";
 
-import { getProviders, signIn, signOut } from "next-auth/react";
+import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Nav = () => {
-  const isUserLoggedIn = true;
+  //const isUserLoggedIn = true;
+  const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, settoggleDropdown] = useState(false);
 
   // Run onload
   useEffect(() => {
-    const setProviders = async () => {
-      const response = await getProviders();
-      setProviders(response);
-    };
-
-    // setProviders();
+    (async () => {
+      const res = await getProviders();
+      setProviders(res);
+    })();
   }, []);
 
   return (
@@ -35,106 +34,110 @@ const Nav = () => {
 
       {/** Desktop Navigation */}
       <div className="sm:flex hidden">
-        {isUserLoggedIn ? (
-          <div className="flex gap-3 md:gap-5">
-            <Link href="/create-idea" className="black_btn">
-              Create Post
-            </Link>
-            <button type="button" onClick={signOut} className="outline_btn">
-              Sign Out
-            </button>
-            <Link href="/profile">
+        {
+          /** isUserLoggedIn */ session?.user ? (
+            <div className="flex gap-3 md:gap-5">
+              <Link href="/create-idea" className="black_btn">
+                Create Post
+              </Link>
+              <button type="button" onClick={signOut} className="outline_btn">
+                Sign Out
+              </button>
+              <Link href="/profile">
+                <Image
+                  src="/assets/images/logo.svg"
+                  alt="Profile"
+                  width={37}
+                  height={37}
+                  className="rounded-full"
+                />
+              </Link>
+            </div>
+          ) : (
+            <>
+              {
+                // If exists providers (onload), then map over all providers
+                // and generate button for each one
+                providers &&
+                  Object.values(providers).map((provider) => (
+                    <button
+                      type="button"
+                      key={provider.name}
+                      onClick={() => signIn(provider.id)}
+                      className="black_btn"
+                    >
+                      Sign In
+                    </button>
+                  ))
+              }
+            </>
+          )
+        }
+      </div>
+
+      {/** Mobile Navigation */}
+      <div className="sm:hidden flex relative">
+        {
+          /** isUserLoggedIn */ session?.user ? (
+            <div className="flex">
+              {" "}
               <Image
                 src="/assets/images/logo.svg"
                 alt="Profile"
                 width={37}
                 height={37}
                 className="rounded-full"
+                onClick={() => settoggleDropdown((prev) => !prev)}
               />
-            </Link>
-          </div>
-        ) : (
-          <>
-            {
-              // If exists providers (onload), then map over all providers
-              // and generate button for each one
-              providers &&
-                Object.values(providers).map((provider) => (
+              {toggleDropdown && (
+                <div className="dropdown">
+                  <Link
+                    href="/profile"
+                    className="dropdown_link"
+                    onClick={() => settoggleDropdown(false)}
+                  >
+                    My Profile
+                  </Link>
+                  <Link
+                    href="/create-idea"
+                    className="dropdown_link"
+                    onClick={() => settoggleDropdown(false)}
+                  >
+                    Create Idea
+                  </Link>
                   <button
                     type="button"
-                    key={provider.name}
-                    onClick={() => signIn(provider.id)}
-                    className="black_btn"
+                    onClick={() => {
+                      settoggleDropdown(false);
+                      signOut();
+                    }}
+                    className="mt-5 w-full black_btn"
                   >
-                    Sign In
+                    Sign Out
                   </button>
-                ))
-            }
-          </>
-        )}
-      </div>
-
-      {/** Mobile Navigation */}
-      <div className="sm:hidden flex relative">
-        {isUserLoggedIn ? (
-          <div className="flex">
-            {" "}
-            <Image
-              src="/assets/images/logo.svg"
-              alt="Profile"
-              width={37}
-              height={37}
-              className="rounded-full"
-              onClick={() => settoggleDropdown((prev) => !prev)}
-            />
-            {toggleDropdown && (
-              <div className="dropdown">
-                <Link
-                  href="/profile"
-                  className="dropdown_link"
-                  onClick={() => settoggleDropdown(false)}
-                >
-                  My Profile
-                </Link>
-                <Link
-                  href="/create-idea"
-                  className="dropdown_link"
-                  onClick={() => settoggleDropdown(false)}
-                >
-                  Create Idea
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => {
-                    settoggleDropdown(false);
-                    signOut();
-                  }}
-                  className="mt-5 w-full black_btn"
-                >
-                  Sign Out
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <>
-            {
-              // If exists providers (onload), then map over all providers
-              // and generate button for each one
-              providers &&
-                Object.values(providers).map((provider) => (
-                  <button
-                    type="button"
-                    key={provider.name}
-                    onClick={() => signIn(provider.id)}
-                    className="black_btn"
-                  >
-                    Sign In
-                  </button>
-                ))
-            }
-          </>
-        )}
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              {
+                // If exists providers (onload), then map over all providers
+                // and generate button for each one
+                providers &&
+                  Object.values(providers).map((provider) => (
+                    <button
+                      type="button"
+                      key={provider.name}
+                      onClick={() => signIn(provider.id)}
+                      className="black_btn"
+                    >
+                      Sign In
+                    </button>
+                  ))
+              }
+            </>
+          )
+        }
       </div>
     </nav>
   );
