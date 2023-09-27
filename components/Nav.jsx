@@ -23,10 +23,10 @@ const Nav = () => {
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex gap-2 flex-center">
         <Image
-          src="/assets/images/logo.svg"
+          src="/assets/images/logo.png"
           alt="Idea Collection Logo"
-          width={30}
-          height={30}
+          width={100}
+          height={100}
           className="object-contain"
         />
         <p className="logo_text">Ideas Collection</p>
@@ -45,7 +45,7 @@ const Nav = () => {
               </button>
               <Link href="/profile">
                 <Image
-                  src="/assets/images/logo.svg"
+                  src={session?.user.image}
                   alt="Profile"
                   width={37}
                   height={37}
@@ -64,9 +64,9 @@ const Nav = () => {
                       type="button"
                       key={provider.name}
                       onClick={() => signIn(provider.id)}
-                      className="black_btn"
+                      className="black_btn ml-1"
                     >
-                      Sign In
+                      Sign In {provider.name}
                     </button>
                   ))
               }
@@ -82,7 +82,7 @@ const Nav = () => {
             <div className="flex">
               {" "}
               <Image
-                src="/assets/images/logo.svg"
+                src={session?.user.image}
                 alt="Profile"
                 width={37}
                 height={37}
