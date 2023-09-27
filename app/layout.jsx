@@ -1,6 +1,6 @@
 import Nav from "@components/Nav";
+import Provider from "@components/Provider";
 import "@styles/globals.css";
-// import Provider  from "@components/Provider";
 
 export const metadata = {
   title: "Ideas Collection",
@@ -11,15 +11,15 @@ const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body>
-        {/** TODO: FIX THIS: mainX style does not exist,
-         * original main style causes button:hover issue */}
-        <div className="mainX">
-          <div className="gradient"></div>
+        <Provider>
+          <div className="main">
+            <div className="gradient" />
+          </div>
           <main className="app">
             <Nav />
             {children}
           </main>
-        </div>
+        </Provider>
       </body>
     </html>
   );
