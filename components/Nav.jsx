@@ -3,6 +3,7 @@
 import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Nav = () => {
@@ -11,13 +12,28 @@ const Nav = () => {
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, settoggleDropdown] = useState(false);
 
+  const router = useRouter();
+
   // Run onload
   useEffect(() => {
+    /**
+     * const setUpProviders = async() => {
+     * const response = await getProviders();
+     * setProviders(response)
+     * }
+     * setUpProviders();
+     */
     (async () => {
       const res = await getProviders();
       setProviders(res);
     })();
   }, []);
+
+  const handleSignOut = () => {
+    signOut({ redirect: false }).then(() => {
+      router.push("/"); // Redirect to the dashboard page after signing out
+    });
+  };
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
@@ -37,10 +53,14 @@ const Nav = () => {
         {
           /** isUserLoggedIn */ session?.user ? (
             <div className="flex gap-3 md:gap-5">
-              <Link href="/create-idea" className="black_btn">
+              <Link href="/create-idea" className="orange_btn">
                 Create Post
               </Link>
-              <button type="button" onClick={signOut} className="outline_btn">
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="outline_btn"
+              >
                 Sign Out
               </button>
               <Link href="/profile">
@@ -64,9 +84,16 @@ const Nav = () => {
                       type="button"
                       key={provider.name}
                       onClick={() => signIn(provider.id)}
-                      className="black_btn ml-1"
+                      className="orange_btn ml-1"
                     >
-                      Sign In {provider.name}
+                      Sign In {"  "}
+                      <Image
+                        src={"/assets/icons/" + provider.name + ".svg"}
+                        alt="Profile"
+                        width={30}
+                        height={30}
+                        className="rounded-full ml-2"
+                      />
                     </button>
                   ))
               }
@@ -111,7 +138,7 @@ const Nav = () => {
                       settoggleDropdown(false);
                       signOut();
                     }}
-                    className="mt-5 w-full black_btn"
+                    className="mt-5 w-full orange_btn"
                   >
                     Sign Out
                   </button>
@@ -120,21 +147,30 @@ const Nav = () => {
             </div>
           ) : (
             <>
-              {
-                // If exists providers (onload), then map over all providers
-                // and generate button for each one
-                providers &&
-                  Object.values(providers).map((provider) => (
-                    <button
-                      type="button"
-                      key={provider.name}
-                      onClick={() => signIn(provider.id)}
-                      className="black_btn"
-                    >
-                      Sign In
-                    </button>
-                  ))
-              }
+              <span className="flex items-center align-middle">
+                Sign In
+                {
+                  // If exists providers (onload), then map over all providers
+                  // and generate button for each one
+                  providers &&
+                    Object.values(providers).map((provider) => (
+                      <button
+                        type="button"
+                        key={provider.name}
+                        onClick={() => signIn(provider.id)}
+                        className=""
+                      >
+                        <Image
+                          src={"/assets/icons/" + provider.name + ".svg"}
+                          alt={provider.name}
+                          width={50}
+                          height={50}
+                          className="rounded-full ml-2"
+                        />
+                      </button>
+                    ))
+                }
+              </span>
             </>
           )
         }
