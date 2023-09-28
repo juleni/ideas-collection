@@ -1,3 +1,5 @@
+import Feed from "@components/Feed";
+
 const Home = () => {
   return (
     <section className="w-full flex-center flex-col">
@@ -9,6 +11,8 @@ const Home = () => {
         Ideas Collection is an open-source tool for collecting and sharing
         ideas.
       </p>
+
+      <Feed />
     </section>
   );
 };
