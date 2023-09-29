@@ -8,7 +8,7 @@ export const GET = async (request, { params }) => {
     const idea = await Idea.findById(params.id).populate("creator");
 
     if (!idea) return new Response("Idea not fount", { status: 404 });
-    return new Response(JSON.stringify(ideas), { status: 200 });
+    return new Response(JSON.stringify(idea), { status: 200 });
   } catch (error) {
     console.log("DB Get Ideas error: " + error);
     return new Response("Failed to retrieve all Ideas", { status: 500 });
