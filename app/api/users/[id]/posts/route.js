@@ -1,10 +1,11 @@
 import Idea from "@models/idea";
 import { connectToDB } from "@utils/database";
 
+// Route for getting all Posts of current (session) user
 export const GET = async (request, { params }) => {
   try {
     await connectToDB();
-    const ideas = await Idea.find({creator: params.id}).populate("creator");
+    const ideas = await Idea.find({ creator: params.id }).populate("creator");
     return new Response(JSON.stringify(ideas), { status: 200 });
   } catch (error) {
     console.log("DB Get Ideas error: " + error);
