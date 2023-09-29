@@ -53,7 +53,7 @@ const IdeaCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
         className="blue_gradient font-inter text-sm cursor-pointer"
         onClick={() => handleTagClick && handleTagClick(post.tag)}
       >
-        {post.tag}
+        #{post.tag}
       </p>
 
       {session?.user.id === post.creator._id && pathName === "/profile" && (
