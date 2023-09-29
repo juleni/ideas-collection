@@ -13,20 +13,50 @@ const IdeaCardList = ({ data, handleTagClick }) => {
 };
 
 const Feed = () => {
+  // Search states
   const [searchText, setSearchText] = useState("");
-  const [posts, setPosts] = useState([]);
+  const [searchTimeout, setSearchTimeout] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+
+  const [allPosts, setAllPosts] = useState([]);
+
+  const filterPosts = (searchText) => {
+    const regex = new RegExp(searchText, "i"); // i-flag for case-insensitive search
+    return allPosts.filter(
+      (item) =>
+        regex.test(item.creator.username) ||
+        regex.test(item.tag) ||
+        regex.test(item.idea)
+    );
+  };
+
   const handleSearchChange = (e) => {
+    clearTimeout(searchTimeout);
     setSearchText(e.target.value);
+    // Fast search refresh
+    setSearchTimeout(
+      setTimeout(() => {
+        const searchResult = filterPosts(e.target.value);
+        setSearchResults(searchResult);
+      }, 500)
+    );
+  };
+
+  const handleTagClick = (tagName) => {
+    setSearchText(tagName);
+    const searchResult = filterPosts(tagName);
+    setSearchResults(searchResult);
+  };
+
+  const fetchPosts = async () => {
+    const response = await fetch("api/idea");
+    const data = await response.json();
+    console.log(data);
+    setAllPosts(data);
   };
 
   useEffect(() => {
-    const fetchIdeas = async () => {
-      const response = await fetch("api/idea");
-      const data = await response.json();
-      console.log(data);
-      setPosts(data);
-    };
-    fetchIdeas();
+    fetchPosts();
   }, []);
 
   return (
@@ -41,7 +71,11 @@ const Feed = () => {
           className="search_input peer"
         />
       </form>
-      <IdeaCardList data={posts} handleTagClick={() => {}} />
+      {searchText ? (
+        <IdeaCardList data={searchResults} handleTagClick={handleTagClick} />
+      ) : (
+        <IdeaCardList data={allPosts} handleTagClick={handleTagClick} />
+      )}
     </section>
   );
 };
