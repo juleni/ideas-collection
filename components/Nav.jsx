@@ -136,7 +136,7 @@ const Nav = () => {
                     type="button"
                     onClick={() => {
                       settoggleDropdown(false);
-                      signOut();
+                      handleSignOut();
                     }}
                     className="mt-5 w-full orange_btn"
                   >
