@@ -51,7 +51,6 @@ const Feed = () => {
   const fetchPosts = async () => {
     const response = await fetch("api/idea");
     const data = await response.json();
-    console.log(data);
     setAllPosts(data);
   };
 
