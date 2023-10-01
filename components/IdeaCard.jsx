@@ -10,15 +10,24 @@ const IdeaCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
   const pathName = usePathname();
   const router = useRouter();
   const [copied, setCopied] = useState(false);
+
   const handleCopy = () => {
     setCopied(post.idea);
     navigator.clipboard.writeText(post.idea);
     setTimeout(() => setCopied(""), 3000);
   };
+
+  const handleUserProfileClick = () => {
+    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
+  };
+
   return (
     <div className="idea_card">
       <div className="flex justify-between items-start gap-5">
-        <div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
+        <div
+          className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
+          onClick={handleUserProfileClick}
+        >
           <Image
             src={post.creator.image}
             alt="Profile Image"
