@@ -88,7 +88,11 @@ const Nav = () => {
                     >
                       Sign In {"  "}
                       <Image
-                        src={"/assets/icons/google.svg"} // " + provider.name + ".svg"}
+                        src={
+                          "/assets/icons/" +
+                          provider.name.toLowerCase() +
+                          ".svg"
+                        }
                         alt="Profile"
                         width={30}
                         height={30}
@@ -163,7 +167,11 @@ const Nav = () => {
                         className=""
                       >
                         <Image
-                          src={"/assets/icons/google.svg"} ///assets/icons/" + provider.name + ".svg
+                          src={
+                            "/assets/icons/" +
+                            provider.name.toLowerCase() +
+                            ".svg"
+                          }
                           alt={provider.name}
                           width={50}
                           height={50}
