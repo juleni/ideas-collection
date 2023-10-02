@@ -1,3 +1,13 @@
+# Idea Collection
+
+### [Demo here:](https://ideas-collection-ditul8mnr-juleni.vercel.app/)
+
+#### Discover & Share Ideas Collection
+
+Ideas Collection is an open-source tool for collecting and sharing ideas.
+
+Tech stack: Next.js 13.5, React, Tailwind CSS, MongoDB
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
