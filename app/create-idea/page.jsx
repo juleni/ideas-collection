@@ -23,7 +23,7 @@ const CreateIdea = () => {
         body: JSON.stringify({
           idea: post.idea,
           userId: session?.user.id,
-          tag: post.tag,
+          tag: post.tag.replace(/^#+/, ""),
         }),
       });
       if (response.ok) {
