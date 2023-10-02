@@ -83,7 +83,7 @@ const Nav = () => {
                     <button
                       type="button"
                       key={provider.name}
-                      onClick={() => signIn(provider.id)}
+                      onClick={() => signIn(provider.id, { callbackUrl: "/" })}
                       className="orange_btn ml-1"
                     >
                       Sign In {"  "}
@@ -157,7 +157,9 @@ const Nav = () => {
                       <button
                         type="button"
                         key={provider.name}
-                        onClick={() => signIn(provider.id)}
+                        onClick={() =>
+                          signIn(provider.id, { callbackUrl: "/" })
+                        }
                         className=""
                       >
                         <Image
