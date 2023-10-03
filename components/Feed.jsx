@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import IdeaCard from "./IdeaCard";
 
 const IdeaCardList = ({ data, handleTagClick }) => {
-  console.log("IdeaCardList:");
-  console.log(data);
   return (
     <div className="idea_layout mt-16">
       {data.map((post) => (
@@ -53,8 +51,6 @@ const Feed = () => {
   const fetchPosts = async () => {
     const response = await fetch("api/idea");
     const data = await response.json();
-    console.log("fetchPosts data:");
-    console.log(data);
     setAllPosts(data);
   };
 
