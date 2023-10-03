@@ -16,7 +16,7 @@ const ProfilePage = () => {
       setPosts(data);
     };
     if (session?.user.id) fetchPosts();
-  }, []);
+  }, [session?.user.id]);
 
   const handleEdit = (post) => {
     router.push(`/update-idea?id=${post._id}`);
