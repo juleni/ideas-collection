@@ -1,6 +1,6 @@
 # Idea Collection
 
-### [Demo here:](https://ideas-collection-ditul8mnr-juleni.vercel.app/)
+### [Demo here:](https://ideas-collection-58pqu00cv-juleni.vercel.app)
 
 #### Discover & Share Ideas Collection
 
