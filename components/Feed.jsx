@@ -4,7 +4,7 @@ import IdeaCard from "./IdeaCard";
 
 const IdeaCardList = ({ data, handleTagClick }) => {
   return (
-    <div className="idea_layout mt-16">
+    <div className="idea_layout mt-5">
       {data.map((post) => (
         <IdeaCard key={post._id} post={post} handleTagClick={handleTagClick} />
       ))}
